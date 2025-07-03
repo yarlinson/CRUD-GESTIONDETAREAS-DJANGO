@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+  {% block content %}
+
+h2>Home</h2>
+<form method="post">
+    {% csrf_token %}
+    <H3>Bienvenido</H3>
+</form>
+  {% endblock %}
