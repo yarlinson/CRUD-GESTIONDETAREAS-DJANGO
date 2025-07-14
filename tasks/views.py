@@ -75,19 +75,24 @@ def task_detaill(request, task_id):
         return redirect('task')
 
 @login_required        
-def task_complete(Task, task_id):
+def task_complete(request, task_id):
     task = get_object_or_404(Task, pk=task_id, user=request.user)
     if request.method == "POST":
-        task.datecompleted = timezone.now()       
+        if task.datecompleted:
+            # Si la tarea ya está completada, la descompletamos
+            task.datecompleted = None
+        else:
+            # Si la tarea no está completada, la completamos
+            task.datecompleted = timezone.now()
         task.save()
-        return redirect('task')
+        return redirect('create_Task')
 
 @login_required
 def task_delete(request, task_id):
     task = get_object_or_404(Task, pk=task_id, user=request.user)
     if request.method == "POST":
         task.delete()
-        return redirect('task')
+        return redirect('create_Task')
 
 def home(request):  
     return render(request, 'home.html')
