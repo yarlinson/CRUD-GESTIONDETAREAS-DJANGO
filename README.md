@@ -1,150 +1,132 @@
-# 📋 CRUD Django - Sistema de Gestión de Tareas
+# 📋 myTask - Gestor de Tareas con Django
 
-Un sistema completo de gestión de tareas desarrollado con Django que permite a los usuarios crear, gestionar y organizar sus tareas personales. Este proyecto implementa operaciones CRUD (Create, Read, Update, Delete) con autenticación de usuarios y una interfaz moderna usando Tailwind CSS.
+Un sistema moderno de gestión de tareas desarrollado con Django y diseñado con una interfaz limpia y amigable. Permite a los usuarios organizar sus tareas diarias de manera eficiente con funcionalidades de marcado, desmarcado y seguimiento de completado.
 
-## ✨ Características Principales
+## 🎯 Características Destacadas
 
-- 🔐 **Sistema de Autenticación**
-  - Registro de usuarios con encriptación de contraseñas
-  - Login y logout seguros
-  - Protección de rutas con decorador @login_required
+### 🔐 Sistema de Autenticación
+![Pantalla de Login](docs/images/Login.png)
+- Interfaz de login intuitiva
+- Registro de nuevos usuarios
+- Protección de rutas
+- Gestión de sesiones segura
 
-- 📝 **Gestión Completa de Tareas**
-  - Crear nuevas tareas con título y descripción
-  - Ver lista de tareas pendientes
-  - Editar tareas existentes
-  - Eliminar tareas no necesarias
-  - Marcar/Desmarcar tareas como completadas
-  - Registro automático de fecha de creación y completado
+### 📝 Gestión de Tareas
+![Gestión de Tareas](docs/images/Gestor%20De%20Tareas.png)
+- Crear tareas con título y descripción
+- Marcar tareas como importantes
+- Marcar/Desmarcar tareas como completadas
+- Registro automático de fecha de completado
+- Edición y eliminación de tareas
+- Vista de lista organizada
 
-- 🎨 **Interfaz Moderna**
-  - Diseño responsive con Tailwind CSS
-  - Formularios estilizados y validados
-  - Feedback visual para acciones del usuario
-  - Confirmación para acciones importantes
+### 🎨 Interfaz de Usuario
+- Diseño moderno y minimalista
+- Feedback visual para acciones
+- Responsive design
+- Navegación intuitiva
+- Botones de acción claros y accesibles
 
-- 🔒 **Seguridad y Privacidad**
-  - Cada usuario solo puede ver y gestionar sus propias tareas
-  - Validación de permisos en cada operación
-  - Protección CSRF en formularios
-  - Manejo seguro de sesiones
-
-## 🛠️ Tecnologías Utilizadas
+## 🛠️ Tecnologías
 
 - **Backend**: Django 5.2
-- **Frontend**: Tailwind CSS
+- **Frontend**: 
+  - HTML5
+  - Tailwind CSS
+  - JavaScript
 - **Base de Datos**: SQLite3
-- **Autenticación**: Django Auth System
-- **Formularios**: Django Forms + Widget Tweaks
+- **Autenticación**: Django Auth
+- **Forms**: Django Forms + Widget Tweaks
 
-## 📋 Requisitos Previos
-
-- Python 3.8 o superior
-- pip (gestor de paquetes de Python)
-- Navegador web moderno
-
-## 🚀 Instalación
+## 📦 Instalación
 
 1. **Clonar el repositorio**
-   ```bash
-   git clone https://github.com/tu-usuario/CRUD-DJANGO-TAREAS.git
-   cd CRUD-DJANGO-TAREAS
-   ```
+```bash
+git clone https://github.com/yarlinson/CRUD-GESTIONDETAREAS-DJANGO.git
+cd CRUD-GESTIONDETAREAS-DJANGO
+```
 
-2. **Crear y activar entorno virtual**
-   ```bash
-   python -m venv venv
+2. **Crear entorno virtual**
+```bash
+python -m venv venv
 
-   # Windows:
-   venv\Scripts\activate
+# Windows
+venv\Scripts\activate
 
-   # Linux/macOS:
-   source venv/bin/activate
-   ```
+# Linux/macOS
+source venv/bin/activate
+```
 
 3. **Instalar dependencias**
-   ```bash
-   pip install -r requirements.txt
-   ```
+```bash
+pip install -r requirements.txt
+```
 
-4. **Aplicar migraciones**
-   ```bash
-   python manage.py migrate
-   ```
+4. **Configurar la base de datos**
+```bash
+python manage.py migrate
+```
 
 5. **Crear superusuario (opcional)**
-   ```bash
-   python manage.py createsuperuser
-   ```
-
-6. **Iniciar servidor**
-   ```bash
-   python manage.py runserver
-   ```
-
-## 📱 Uso del Sistema
-
-### Rutas Principales
-- `/`: Página de inicio
-- `/registro/`: Crear nueva cuenta
-- `/login/`: Iniciar sesión
-- `/tasks/create/`: Crear y gestionar tareas
-- `/tasks/`: Ver lista de tareas pendientes
-
-### Gestión de Tareas
-1. Inicia sesión o regístrate
-2. Ve a `/tasks/create/` para:
-   - Crear nuevas tareas
-   - Ver tus tareas existentes
-   - Marcar/desmarcar tareas como completadas
-   - Editar o eliminar tareas
-
-## 🗂️ Estructura del Proyecto
-
-```
-CRUD-DJANGO-TAREAS/
-├── djangocrud/          # Configuración del proyecto
-│   ├── settings.py      # Configuraciones
-│   ├── urls.py          # URLs principales
-│   └── wsgi.py          # Configuración WSGI
-├── tasks/               # Aplicación de tareas
-│   ├── models.py        # Modelo Task
-│   ├── views.py         # Lógica de negocio
-│   ├── forms.py         # Formularios
-│   └── templates/       # Plantillas HTML
-└── manage.py           # Script de Django
+```bash
+python manage.py createsuperuser
 ```
 
-## 📦 Modelo de Datos
+6. **Iniciar el servidor**
+```bash
+python manage.py runserver
+```
 
-### Task
-- `title`: CharField(200) - Título de la tarea
-- `description`: CharField - Descripción (opcional)
-- `created`: DateTimeField - Fecha de creación (automática)
-- `datecompleted`: DateTimeField - Fecha de completado (opcional)
-- `important`: BooleanField - Marca de importancia
-- `user`: ForeignKey - Usuario propietario
+## 📱 Uso
+
+1. **Registro/Login**
+   - Accede a la página de inicio
+   - Crea una nueva cuenta o inicia sesión
+   - Los datos se validan automáticamente
+
+2. **Gestión de Tareas**
+   - Crea nuevas tareas desde el formulario principal
+   - Marca las tareas como importantes según prioridad
+   - Usa el checkbox para marcar/desmarcar como completadas
+   - Edita o elimina tareas según necesites
+
+3. **Seguimiento**
+   - Visualiza la fecha de completado de las tareas
+   - Filtra entre tareas pendientes y completadas
+   - Mantén un registro de tu progreso
 
 ## 🔄 Funcionalidades Implementadas
 
-### Vistas
-- `home`: Página principal
-- `registro_view`: Registro de usuarios
-- `login_view`: Autenticación
-- `create_Task`: Crear y listar tareas
-- `task_detaill`: Editar tarea
-- `task_complete`: Marcar/desmarcar completada
-- `task_delete`: Eliminar tarea
+### Vistas Principales
+- `home`: Dashboard principal
+- `login_view`: Autenticación de usuarios
+- `create_Task`: Creación y listado de tareas
+- `task_complete`: Toggle de estado completado
+- `task_delete`: Eliminación de tareas
+
+### Modelo de Datos
+```python
+class Task(models.Model):
+    title = models.CharField(max_length=200)
+    description = models.CharField(blank=True)
+    created = models.DateTimeField(auto_now_add=True)
+    datecompleted = models.DateTimeField(null=True, blank=True)
+    important = models.BooleanField(default=False)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+```
 
 ## 🤝 Contribuir
 
 1. Fork el repositorio
-2. Crea una rama para tu feature (`git checkout -b feature/NuevaCaracteristica`)
-3. Commit tus cambios (`git commit -m 'Agrega nueva característica'`)
-4. Push a la rama (`git push origin feature/NuevaCaracteristica`)
+2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
+3. Commit tus cambios (`git commit -m 'Add: Nueva característica'`)
+4. Push a la rama (`git push origin feature/AmazingFeature`)
 5. Abre un Pull Request
 
-## 📝 Licencia
+## 📄 Licencia
 
-Este proyecto está bajo la Licencia MIT. Ver el archivo `LICENSE` para más detalles.
+Distribuido bajo la Licencia MIT. Ver `LICENSE` para más información.
 
+## 👤 Autor
+
+Yarlinson Tiberio Barranco Bastilla
