@@ -1,12 +1,17 @@
 {% extends 'base.html' %}
 {% load widget_tweaks %}
 {% block content %}
-<div class="w-full max-w-4xl mx-auto px-4 py-8 space-y-10">
-
-    <!-- Sección: Formulario para crear tarea -->
+<div class="max-w-4xl mx-auto px-4 space-y-10">
+    <!-- Sección: Formulario para crear/editar tarea -->
     <div class="bg-white p-6 rounded-xl shadow">
-        <h2 class="text-2xl font-bold mb-4 text-blue-700">Crear Tarea</h2>
-        <form method="POST" action="/tasks/create/" class="space-y-4">
+        <h2 class="text-2xl font-bold mb-4 text-blue-700">
+            {% if editing %}
+                Editar Tarea
+            {% else %}
+                Crear Tarea
+            {% endif %}
+        </h2>
+        <form method="POST" class="space-y-4">
             {% csrf_token %}
             
             <!-- Campo: Título -->
@@ -27,10 +32,21 @@
                 <label class="text-gray-700 font-medium">Importante</label>
             </div>
 
-            <!-- Botón -->
-            <button type="submit" class="w-full bg-blue-600 text-white font-semibold py-2 rounded-md hover:bg-blue-700 transition">
-                Guardar
-            </button>
+            <!-- Botones -->
+            <div class="flex gap-2">
+                <button type="submit" class="flex-1 bg-blue-600 text-white font-semibold py-2 rounded-md hover:bg-blue-700 transition">
+                    {% if editing %}
+                        Guardar Cambios
+                    {% else %}
+                        Crear Tarea
+                    {% endif %}
+                </button>
+                {% if editing %}
+                    <a href="{% url 'create_Task' %}" class="px-4 py-2 bg-gray-100 text-gray-600 rounded-md hover:bg-gray-200 transition">
+                        Cancelar
+                    </a>
+                {% endif %}
+            </div>
         </form>
     </div>
 
@@ -58,18 +74,16 @@
                                 </button>
                             </form>
                             <div>
-                                <a href="{% url 'task_detaill' task.id %}" class="hover:text-blue-600">
-                                    <h3 class="font-semibold {% if task.datecompleted %}line-through text-gray-500{% else %}text-gray-800{% endif %}">
-                                        {{ task.title }}
-                                    </h3>
-                                </a>
+                                <h3 class="font-semibold {% if task.datecompleted %}line-through text-gray-500{% else %}text-gray-800{% endif %}">
+                                    {{ task.title }}
+                                </h3>
                                 <p class="text-sm {% if task.datecompleted %}line-through text-gray-400{% else %}text-gray-500{% endif %}">
                                     {{ task.description }}
                                 </p>
                             </div>
                         </div>
                         <div class="flex gap-2">
-                            <a href="{% url 'task_detaill' task.id %}" class="px-3 py-1 bg-blue-100 text-blue-600 rounded hover:bg-blue-200 transition">
+                            <a href="?edit={{ task.id }}" class="px-3 py-1 bg-blue-100 text-blue-600 rounded hover:bg-blue-200 transition">
                                 Editar
                             </a>
                             <form action="{% url 'task_delete' task.id %}" method="POST" class="inline">

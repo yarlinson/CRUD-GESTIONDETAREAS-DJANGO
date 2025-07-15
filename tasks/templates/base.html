@@ -6,9 +6,56 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>myTask</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Heroicons -->
+    <script src="https://unpkg.com/@heroicons/v2/24/outline/esm/index.js"></script>
 </head>
-<body class="bg-blue-50 min-h-screen flex flex-col items-center justify-center">
-    {% block content %}
-    {% endblock %}
+<body class="bg-blue-50 min-h-screen flex flex-col">
+    <!-- Navbar -->
+    <nav class="bg-white shadow-sm mb-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <!-- Logo y nombre -->
+                <div class="flex items-center">
+                    <a href="{% url 'home' %}" class="flex items-center">
+                        <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
+                            </svg>
+                        </div>
+                        <span class="ml-2 text-xl font-bold text-gray-800">myTask</span>
+                    </a>
+                </div>
+
+                <!-- Menú de navegación -->
+                <div class="flex items-center space-x-4">
+                    {% if user.is_authenticated %}
+                        <span class="text-sm text-gray-600">{{ user.username }}</span>
+                        <a href="{% url 'logout' %}" 
+                           class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                            Cerrar Sesión
+                        </a>
+                    {% else %}
+                        <a href="{% url 'login' %}" class="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">
+                            Iniciar Sesión
+                        </a>
+                        <a href="{% url 'registro' %}" class="bg-blue-600 text-white hover:bg-blue-700 px-4 py-2 rounded-md text-sm font-medium">
+                            Registrarse
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenido principal -->
+    <main class="flex-1 flex items-center justify-center px-4">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-4 text-center text-sm text-gray-500">
+        © {% now "Y" %} myTask. Todos los derechos reservados.
+    </footer>
 </body>
 </html>    

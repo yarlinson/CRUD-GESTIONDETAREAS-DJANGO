@@ -41,21 +41,35 @@ def logout_view(request):
 
 @login_required
 def create_Task(request):
-    if request.method == 'POST':
-        try:    
-            form = FormCreateTask(request.POST) 
-            new_task = form.save(commit=False)
-            new_task.user = request.user
-            print(new_task)
-            new_task.save()
-            tasks = Task.objects.filter(user = request.user)
-            return render(request, 'create_task.html', {'form': FormCreateTask,'tasks': tasks})
-        except ValueError:
-            tasks = Task.objects.filter(user = request.user)
-            return render(request, 'create_task.html', {'form': FormCreateTask, 'error': 'Please provide valida data','tasks': tasks})
+    task_id = request.GET.get('edit')  # Obtener el ID de la tarea a editar
+    if task_id:
+        task = get_object_or_404(Task, pk=task_id, user=request.user)
+        if request.method == 'POST':
+            form = FormCreateTask(request.POST, instance=task)
+            if form.is_valid():
+                form.save()
+                return redirect('create_Task')
+        else:
+            form = FormCreateTask(instance=task)
     else:
-        tasks = Task.objects.filter(user = request.user)
-        return render(request, 'create_task.html', {'form': FormCreateTask,'tasks': tasks})
+        if request.method == 'POST':
+            try:    
+                form = FormCreateTask(request.POST) 
+                new_task = form.save(commit=False)
+                new_task.user = request.user
+                new_task.save()
+                return redirect('create_Task')
+            except ValueError:
+                form = FormCreateTask(request.POST)
+        else:
+            form = FormCreateTask()
+    
+    tasks = Task.objects.filter(user=request.user)
+    return render(request, 'create_task.html', {
+        'form': form,
+        'tasks': tasks,
+        'editing': task_id is not None
+    })
 
 @login_required
 def listTasks(request):
