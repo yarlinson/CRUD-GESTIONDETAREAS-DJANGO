@@ -1,57 +1,62 @@
-# 📋 myTask - Gestor de Tareas con Django
+# 📋 Task Manager - Django & REST API
 
-Un sistema moderno de gestión de tareas desarrollado con Django y diseñado con una interfaz limpia y amigable. Permite a los usuarios organizar sus tareas diarias de manera eficiente con funcionalidades de marcado, desmarcado y seguimiento de completado.
+Una aplicación web moderna para la gestión de tareas, construida con Django y REST Framework. Combina una interfaz web intuitiva con una API REST completamente documentada.
 
-## 🎯 Características Destacadas
+![Django](https://img.shields.io/badge/Django-5.2-green.svg)
+![DRF](https://img.shields.io/badge/DRF-3.14-red.svg)
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
 
-### 🔐 Sistema de Autenticación
-![Pantalla de Login](docs/images/Login.png)
-- Interfaz de login intuitiva
-- Registro de nuevos usuarios
-- Protección de rutas
-- Gestión de sesiones segura
+## ✨ Características
 
-### 📝 Gestión de Tareas
-![Gestión de Tareas](docs/images/Gestor%20De%20Tareas.png)
-- Crear tareas con título y descripción
-- Marcar tareas como importantes
-- Marcar/Desmarcar tareas como completadas
-- Registro automático de fecha de completado
-- Edición y eliminación de tareas
-- Vista de lista organizada
+### 🌐 Interfaz Web
+- Sistema completo de autenticación (registro, login, logout)
+- Gestión de tareas (crear, editar, eliminar)
+- Marcado de tareas como completadas
+- Filtrado por estado (pendientes/completadas)
+- Interfaz responsive con Bootstrap
+- Protección CSRF y validación de formularios
 
-### 🎨 Interfaz de Usuario
-- Diseño moderno y minimalista
-- Feedback visual para acciones
-- Responsive design
-- Navegación intuitiva
-- Botones de acción claros y accesibles
+### 🔌 API REST
+- Documentación completa con Swagger/OpenAPI
+- Autenticación basada en tokens
+- CRUD completo para tareas
+- Filtrado y búsqueda avanzada
+- Paginación automática
+- Endpoints específicos para tareas completadas/pendientes
 
 ## 🛠️ Tecnologías
 
-- **Backend**: Django 5.2
-- **Frontend**: 
-  - HTML5
-  - Tailwind CSS
+- **Backend**
+  - Django 5.2
+  - Django REST Framework
+  - drf-yasg (Swagger/OpenAPI)
+  
+- **Frontend**
+  - Bootstrap 5
+  - HTML5 & CSS3
   - JavaScript
-- **Base de Datos**: SQLite3
-- **Autenticación**: Django Auth
-- **Forms**: Django Forms + Widget Tweaks
+  
+- **Base de Datos**
+  - SQLite
+  
+- **Autenticación**
+  - Token-based Authentication
+  - Django Authentication
 
 ## 📦 Instalación
 
 1. **Clonar el repositorio**
 ```bash
-git clone https://github.com/yarlinson/CRUD-GESTIONDETAREAS-DJANGO.git
-cd CRUD-GESTIONDETAREAS-DJANGO
+git clone <tu-repositorio>
+cd CRUD-DJANGO-TAREAS
 ```
 
-2. **Crear entorno virtual**
+2. **Crear y activar entorno virtual**
 ```bash
 python -m venv venv
 
 # Windows
-venv\Scripts\activate
+.\venv\Scripts\activate
 
 # Linux/macOS
 source venv/bin/activate
@@ -59,10 +64,10 @@ source venv/bin/activate
 
 3. **Instalar dependencias**
 ```bash
-pip install -r requirements.txt
+pip install django djangorestframework drf-yasg django-widget-tweaks
 ```
 
-4. **Configurar la base de datos**
+4. **Aplicar migraciones**
 ```bash
 python manage.py migrate
 ```
@@ -72,61 +77,94 @@ python manage.py migrate
 python manage.py createsuperuser
 ```
 
-6. **Iniciar el servidor**
+6. **Iniciar servidor**
 ```bash
 python manage.py runserver
 ```
 
-## 📱 Uso
+## 🔌 API Endpoints
 
-1. **Registro/Login**
-   - Accede a la página de inicio
-   - Crea una nueva cuenta o inicia sesión
-   - Los datos se validan automáticamente
+### Autenticación
+| Método | Endpoint | Descripción |
+|--------|----------|-------------|
+| POST | `/api/token/` | Obtener token de autenticación |
 
-2. **Gestión de Tareas**
-   - Crea nuevas tareas desde el formulario principal
-   - Marca las tareas como importantes según prioridad
-   - Usa el checkbox para marcar/desmarcar como completadas
-   - Edita o elimina tareas según necesites
+### Tareas
+| Método | Endpoint | Descripción |
+|--------|----------|-------------|
+| GET | `/api/tasks/` | Listar todas las tareas |
+| POST | `/api/tasks/` | Crear nueva tarea |
+| GET | `/api/tasks/{id}/` | Ver detalle de tarea |
+| PUT | `/api/tasks/{id}/` | Actualizar tarea |
+| DELETE | `/api/tasks/{id}/` | Eliminar tarea |
+| POST | `/api/tasks/{id}/complete/` | Marcar como completada |
+| GET | `/api/tasks/completed/` | Listar tareas completadas |
+| GET | `/api/tasks/pending/` | Listar tareas pendientes |
 
-3. **Seguimiento**
-   - Visualiza la fecha de completado de las tareas
-   - Filtra entre tareas pendientes y completadas
-   - Mantén un registro de tu progreso
+### Documentación
+| Endpoint | Descripción |
+|----------|-------------|
+| `/swagger/` | UI interactiva de Swagger |
+| `/redoc/` | Documentación con ReDoc |
 
-## 🔄 Funcionalidades Implementadas
+## 🚀 Uso de la API
 
-### Vistas Principales
-- `home`: Dashboard principal
-- `login_view`: Autenticación de usuarios
-- `create_Task`: Creación y listado de tareas
-- `task_complete`: Toggle de estado completado
-- `task_delete`: Eliminación de tareas
+### Obtener Token
+```bash
+curl -X POST http://localhost:8000/api/token/ \
+  -d "username=tuusuario&password=tucontraseña"
+```
 
-### Modelo de Datos
-```python
-class Task(models.Model):
-    title = models.CharField(max_length=200)
-    description = models.CharField(blank=True)
-    created = models.DateTimeField(auto_now_add=True)
-    datecompleted = models.DateTimeField(null=True, blank=True)
-    important = models.BooleanField(default=False)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+### Usar Token
+```bash
+curl -H "Authorization: Token tutoken" \
+  http://localhost:8000/api/tasks/
+```
+
+## 🔍 Características de la API
+
+### Filtrado y Búsqueda
+- Búsqueda por título y descripción
+- Ordenamiento por:
+  - Fecha de creación
+  - Fecha de completado
+  - Importancia
+- Paginación (10 items por página)
+
+### Seguridad
+- Autenticación requerida
+- Protección CSRF
+- Validación de datos
+- Aislamiento por usuario
+
+## 📁 Estructura del Proyecto
+
+```
+CRUD-DJANGO-TAREAS/
+├── djangocrud/          # Configuración principal
+├── tasks/              # Aplicación principal
+│   ├── api.py         # Vistas de la API
+│   ├── models.py      # Modelos de datos
+│   ├── serializers.py # Serializadores
+│   ├── views.py       # Vistas web
+│   └── templates/     # Plantillas HTML
+└── manage.py
 ```
 
 ## 🤝 Contribuir
 
 1. Fork el repositorio
-2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
+2. Crea una rama para tu característica (`git checkout -b feature/AmazingFeature`)
 3. Commit tus cambios (`git commit -m 'Add: Nueva característica'`)
 4. Push a la rama (`git push origin feature/AmazingFeature`)
 5. Abre un Pull Request
 
-## 📄 Licencia
-
-Distribuido bajo la Licencia MIT. Ver `LICENSE` para más información.
 
 ## 👤 Autor
 
-Yarlinson Tiberio Barranco Bastilla
+**Yarlinson Tiberio Barranco Bastilla**
+
+- GitHub: [@yarlinson](https://github.com/yarlinson)
+
+---
+⭐️ ¡Si te gusta el proyecto, dale una estrella! ⭐️

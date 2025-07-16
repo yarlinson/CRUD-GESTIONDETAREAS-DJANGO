@@ -15,18 +15,42 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
-from tasks import views
+from django.urls import path, include
+from rest_framework import routers
+from tasks.api import TaskViewSet
+from rest_framework.authtoken import views as token_views
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
+from rest_framework import permissions
+
+# API Router
+router = routers.DefaultRouter()
+router.register(r'tasks', TaskViewSet, basename='task')
+
+# Swagger Schema View
+schema_view = get_schema_view(
+   openapi.Info(
+      title="Tasks API",
+      default_version='v1',
+      description="API for managing tasks",
+      terms_of_service="https://www.google.com/policies/terms/",
+      contact=openapi.Contact(email="contact@tasks.local"),
+      license=openapi.License(name="BSD License"),
+   ),
+   public=True,
+   permission_classes=(permissions.AllowAny,),
+)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.create_Task, name='home'),
-    path('registro/', views.registro_view, name='registro'),
-    path('login/', views.login_view, name='login'),
-    path('logout/', views.logout_view, name='logout'),
-    path('tasks/create/', views.create_Task, name='create_Task'),
-    path('tasks/', views.listTasks, name='task'),
-    path('tasks/detaill/<int:task_id>', views.task_detaill, name='task_detaill'),
-    path('tasks/<int:task_id>/completed', views.task_complete, name='task_complete'),
-    path('tasks/<int:task_id>/deleted', views.task_delete, name='task_delete')
+    path('', include('tasks.urls')),
+    
+    # API URLs
+    path('api/', include(router.urls)),
+    path('api/token/', token_views.obtain_auth_token, name='api-token'),
+    
+    # API Documentation
+    path('swagger<format>/', schema_view.without_ui(cache_timeout=0), name='schema-json'),
+    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 ]
